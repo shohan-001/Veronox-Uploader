@@ -7,17 +7,21 @@ import os
 from plugins.config import Config
 from pyrogram import Client
 
-if __name__ == "__main__" :
+if __name__ == "__main__":
+    Client.run()
     
+    if __name__ == "__main__":
     if not os.path.isdir(Config.DOWNLOAD_LOCATION):
         os.makedirs(Config.DOWNLOAD_LOCATION)
     plugins = dict(root="plugins")
-    Client = Client("@UploaderXNTBot",
-    bot_token=Config.BOT_TOKEN,
-    api_id=Config.API_ID,
-    api_hash=Config.API_HASH,
-    upload_boost=True,
-    sleep_threshold=300,
-    plugins=plugins)
+    Client = Client(
+        Config.BOT_USERNAME,
+        bot_token=Config.BOT_TOKEN,
+        api_id=Config.API_ID,
+        api_hash=Config.API_HASH,
+        upload_boost=True,
+        sleep_threshold=300,
+        plugins=plugins
+    )
     print("🎊 I AM ALIVE 🎊  • Support @NT_BOTS_SUPPORT")
     Client.run()
