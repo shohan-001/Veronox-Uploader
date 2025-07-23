@@ -1,56 +1,61 @@
+# plugins/config.py
 import os
-from os import environ, getenv
 import logging
+from dotenv import load_dotenv
+
+# ────────────────────────────────────────────────────────
+# Load variables from .env (if the file exists)
+# ────────────────────────────────────────────────────────
+load_dotenv()
 
 logging.basicConfig(
-    format='%(name)s - %(levelname)s - %(message)s',
-    handlers=[logging.FileHandler('log.txt'),
-              logging.StreamHandler()],
-    level=logging.INFO
+    format="%(name)s - %(levelname)s - %(message)s",
+    handlers=[logging.FileHandler("log.txt"), logging.StreamHandler()],
+    level=logging.INFO,
 )
 
-class Config(object):
-    
-    BOT_TOKEN = os.environ.get("BOT_TOKEN", "")
-    API_ID = int(os.environ.get("API_ID", ))
-    API_HASH = os.environ.get("API_HASH", "")
-    
-    DOWNLOAD_LOCATION = "./DOWNLOADS"
-    MAX_FILE_SIZE = 2194304000
-    TG_MAX_FILE_SIZE = 2194304000
-    SESSION_STR = ""
-    FREE_USER_MAX_FILE_SIZE = 2194304000
-    CHUNK_SIZE = int(os.environ.get("CHUNK_SIZE", 128))
-    DEF_THUMB_NAIL_VID_S = os.environ.get("DEF_THUMB_NAIL_VID_S", "https://placehold.it/90x90")
-    HTTP_PROXY = os.environ.get("HTTP_PROXY", "")
-    
-    OUO_IO_API_KEY = ""
-    MAX_MESSAGE_LENGTH = 4096
-    PROCESS_MAX_TIMEOUT = 3600
-    DEF_WATER_MARK_FILE = "@UploaderXNTBot"
+class Config:
+    # ───────── Mandatory Telegram / Pyrogram creds ─────────
+    BOT_TOKEN = os.getenv("BOT_TOKEN", "")
+    API_ID    = int(os.getenv("API_ID", 0))
+    API_HASH  = os.getenv("API_HASH", "")
 
-    BANNED_USERS = set(int(x) for x in os.environ.get("BANNED_USERS", "").split())
+    # ───────── Paths & size limits ─────────
+    DOWNLOAD_LOCATION       = os.getenv("DOWNLOAD_LOCATION", "./DOWNLOADS")
+    MAX_FILE_SIZE           = int(os.getenv("MAX_FILE_SIZE", 2194304000))
+    TG_MAX_FILE_SIZE        = int(os.getenv("TG_MAX_FILE_SIZE", 2194304000))
+    FREE_USER_MAX_FILE_SIZE = int(os.getenv("FREE_USER_MAX_FILE_SIZE", 2194304000))
+    TG_MIN_FILE_SIZE        = int(os.getenv("TG_MIN_FILE_SIZE", 2194304000))
+    CHUNK_SIZE              = int(os.getenv("CHUNK_SIZE", 128))
 
-    DATABASE_URL = os.environ.get("DATABASE_URL", "")
+    # ───────── Optional URLs / proxies / watermark ─────────
+    DEF_THUMB_NAIL_VID_S = os.getenv("DEF_THUMB_NAIL_VID_S", "https://placehold.it/90x90")
+    HTTP_PROXY           = os.getenv("HTTP_PROXY", "")
+    OUO_IO_API_KEY       = os.getenv("OUO_IO_API_KEY", "")
+    DEF_WATER_MARK_FILE  = os.getenv("DEF_WATER_MARK_FILE", "@UploaderXNTBot")
 
-    LOG_CHANNEL = int(os.environ.get("LOG_CHANNEL", ""))
+    # ───────── Bot behaviour & housekeeping ─────────
+    MAX_MESSAGE_LENGTH   = int(os.getenv("MAX_MESSAGE_LENGTH", 4096))
+    PROCESS_MAX_TIMEOUT  = int(os.getenv("PROCESS_MAX_TIMEOUT", 3600))
+    SESSION_STR          = os.getenv("SESSION_STR", "")
+    SESSION_NAME         = "UploaderXNTBot"
+
+    # ───────── Database & logging ─────────
+    DATABASE_URL = os.getenv("DATABASE_URL", "")
+    LOG_CHANNEL  = int(os.getenv("LOG_CHANNEL", "0") or 0)
+
+    # ───────── Admin & FSUB ─────────
+    OWNER_ID       = int(os.getenv("OWNER_ID", "0") or 0)
+    UPDATES_CHANNEL = os.getenv("UPDATES_CHANNEL", "")
+
+    # ───────── Short‑link & verification ─────────
+    TRUE_OR_FALSE = os.getenv("TRUE_OR_FALSE", "").lower() == "true"
+    SHORT_DOMAIN  = os.getenv("SHORT_DOMAIN", "")
+    SHORT_API     = os.getenv("SHORT_API", "")
+    VERIFICATION  = os.getenv("VERIFICATION", "")
+
+    # ───────── Misc ─────────
+    BOT_USERNAME  = os.getenv("BOT_USERNAME", "")
+    BANNED_USERS  = {int(x) for x in os.getenv("BANNED_USERS", "").split()} if os.getenv("BANNED_USERS") else set()
+
     LOGGER = logging
-    OWNER_ID = int(os.environ.get("OWNER_ID", ""))
-    SESSION_NAME = "UploaderXNTBot"
-    UPDATES_CHANNEL = os.environ.get("UPDATES_CHANNEL", "")
-
-    TG_MIN_FILE_SIZE = 2194304000
-    BOT_USERNAME = os.environ.get("BOT_USERNAME", "")
-    ADL_BOT_RQ = {}
-
-    # Set False off else True
-    TRUE_OR_FALSE = os.environ.get("TRUE_OR_FALSE", "").lower() == "true"
-
-    # Shortlink settings
-    SHORT_DOMAIN = environ.get("SHORT_DOMAIN", "")
-    SHORT_API = environ.get("SHORT_API", "")
-
-    # Verification video link
-    VERIFICATION = os.environ.get("VERIFICATION", "")
-
-    
